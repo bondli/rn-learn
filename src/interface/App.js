@@ -7,11 +7,14 @@ import {
     ListView,
     View,
     Text,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 
 import {screenWidth, screenHeight, flexible} from '../commons/utils';
 import {styles} from './styles/app';
+
+import ActivityComponent from './Activity';
 
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 
@@ -30,6 +33,17 @@ export default class App extends Component {
       }),
       loaded: false
     };
+  }
+
+  _pressButton() {
+    const { navigator } = this.props;
+    if(navigator) {
+      navigator.push({
+        name: 'Activity',
+        title: '活动详情',
+        component: ActivityComponent,
+      })
+    }
   }
 
   /**
@@ -63,23 +77,28 @@ export default class App extends Component {
     }
 
     return (
-      <View>
+      <ScrollView>
         {this.renderHeader()}
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderMovie}
           style={styles.listView}
         />
-      </View>
+      </ScrollView>
     );
   }
 
+  /**
+   * banner图
+   */
   renderHeader() {
     return (
-      <Image
-        source={require('../assets/images/banner.png')}
-        style={{width: screenWidth, height: flexible(200)}}
-      />
+      <TouchableOpacity onPress={this._pressButton.bind(this)}>
+        <Image
+          source={require('../assets/images/banner.png')}
+          style={{width: flexible(750), height: flexible(140)}}
+        />
+      </TouchableOpacity>
     );
   }
 
