@@ -10,42 +10,9 @@ import {
     Image
 } from 'react-native';
 
-const styles = StyleSheet.create({
-  container : {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    padding: 10
-  },
-  thumbnail: {
-    width: 53,
-    height: 81,
-  },
-  rightContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  smallfont: {
-    fontSize: 12
-  },
-  year: {
-    textAlign: 'center',
-  },
-  listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
-  }
-});
+import {screenWidth, screenHeight, flexible} from '../commons/utils';
+import {styles} from './styles/app';
 
-var MOCKED_MOVIES_DATA = [
-  {title: 'Title', year: '2015', posters: {thumbnail: 'http://i.imgur.com/UePbdph.jpg'}},
-];
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 
 /**
@@ -65,6 +32,9 @@ export default class App extends Component {
     };
   }
 
+  /**
+   * 异步请求数据
+   */
   _fetchData() {
     fetch(REQUEST_URL)
       .then((response) => response.json())
@@ -93,14 +63,29 @@ export default class App extends Component {
     }
 
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderMovie}
-        style={styles.listView}
+      <View>
+        {this.renderHeader()}
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderMovie}
+          style={styles.listView}
+        />
+      </View>
+    );
+  }
+
+  renderHeader() {
+    return (
+      <Image
+        source={require('../assets/images/banner.png')}
+        style={{width: screenWidth, height: flexible(200)}}
       />
     );
   }
 
+  /**
+   * 加载中
+   */
   renderLoadingView() {
     return (
       <View style={styles.container}>
@@ -111,6 +96,9 @@ export default class App extends Component {
     );
   }
 
+  /**
+   * 单个记录渲染
+   */
   renderMovie(movie) {
     return (
       <View style={styles.container}>
