@@ -17,7 +17,6 @@ import {
 
 import App from './src/interface/App';
 
-
 class rnLearn extends Component {
   render() {
     return (

@@ -8,7 +8,8 @@ import {
     View,
     Text,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl
 } from 'react-native';
 
 import {screenWidth, screenHeight, flexible} from '../commons/utils';
@@ -31,7 +32,9 @@ export default class App extends Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
-      loaded: false
+      loaded: false,
+      isRefreshing: false,
+      //refreshText: '下拉释放后可刷新'
     };
   }
 
@@ -55,7 +58,9 @@ export default class App extends Component {
       .then((responseData) => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
-          loaded: true
+          loaded: true,
+          isRefreshing: false,
+          //refreshText: '下拉释放后可刷新'
         });
       })
       .done();
@@ -77,7 +82,17 @@ export default class App extends Component {
     }
 
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={()=>{return this._onRefresh()}}
+            tintColor="#ff0000"
+            //title={this.state.refreshText}
+            colors={['#ff0000', '#00ff00', '#0000ff']}
+            progressBackgroundColor="#ffff00"
+          />
+        }>
         {this.renderHeader()}
         <ListView
           dataSource={this.state.dataSource}
@@ -86,6 +101,14 @@ export default class App extends Component {
         />
       </ScrollView>
     );
+  }
+
+  _onRefresh() {
+    this.setState({
+      isRefreshing: true,
+      //refreshText: '加载中...'
+    });
+    this._fetchData();
   }
 
   /**
