@@ -34,7 +34,7 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <View style={{backgroundColor:'#f4f4f4',flex:1}}>
+            <View style={{backgroundColor: '#f4f4f4', flex: 1, paddingTop: 70}}>
                 <Image
                     style={styles.app_image}
                     source={{uri: 'http://pic.wenwen.soso.com/p/20100204/20100204182144-2129109565.jpg'}}/>

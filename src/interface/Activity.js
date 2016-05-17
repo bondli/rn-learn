@@ -38,7 +38,7 @@ export default class Activity extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={{paddingTop: 70}}>
                 <TouchableOpacity onPress={this._pressButton.bind(this)}>
                     <Image
                         source={require('../assets/images/banner.png')}

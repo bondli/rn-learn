@@ -25,7 +25,7 @@ export default class Webview extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, paddingTop: 70}}>
                 <WebView
                     source={{uri:this.state.url}}
                     startInLoadingState={true}

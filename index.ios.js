@@ -15,25 +15,23 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import App from './src/interface/App';
+import Splash from './src/interface/Splash';
 
 class rnLearn extends Component {
     render() {
         return (
             <Navigator style={{flex: 1}}
                 initialRoute={{
-                    name: '喵街',
-                    title: '喵街',
-                    component: App
+                    name: 'Splash',
+                    component: Splash
                 }}
                 configureScene={(route) => {
-                    return Navigator.SceneConfigs.PushFromRight;
+                    return Navigator.SceneConfigs.HorizontalSwipeJump;
                 }}
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     return (<Component {...route.params} navigator={navigator} />)
                 }}
-                sceneStyle={{paddingTop: 70}}
                 navigationBar={this._renderNavBar()}
             />
         );
@@ -73,11 +71,14 @@ class rnLearn extends Component {
                 return null;
             },
             Title(route, navigator, index, navState) {
-                return (
-                    <View style={styles.title}>
-                        <Text style={styles.buttonText}>{route.title ? route.title : ''}</Text>
-                    </View>
-                );
+                if(route.title){
+                    return (
+                        <View style={styles.title}>
+                            <Text style={styles.buttonText}>{route.title ? route.title : ''}</Text>
+                        </View>
+                    );
+                }
+                return null;
             }
         };
         return (

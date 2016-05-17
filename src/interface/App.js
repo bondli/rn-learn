@@ -98,6 +98,7 @@ export default class App extends Component {
 
         return (
             <ScrollView
+                style={{paddingTop: 70}}
                 refreshControl={
                     <RefreshControl
                         refreshing={this.state.isRefreshing}
