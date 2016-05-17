@@ -16,6 +16,7 @@ import {screenWidth, screenHeight, flexible} from '../commons/utils';
 import {styles} from './styles/app';
 
 import ActivityComponent from './Activity';
+import WebViewComponent from './Webview';
 
 var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 
@@ -45,6 +46,20 @@ export default class App extends Component {
                 name: 'Activity',
                 title: '活动详情',
                 component: ActivityComponent,
+            });
+        }
+    }
+
+    _openUrl(item) {
+        const { navigator } = this.props;
+        if(navigator) {
+            navigator.push({
+                name: 'WebView',
+                title: (item.title && item.title.length>10) ? item.title.substring(0,7)+'...' : '',
+                component: WebViewComponent,
+                params: {
+                    url: 'https://o2o.m.taobao.com/interact/rp/rpdetail.html?strId=A015CX&' + item.title
+                }
             });
         }
     }
@@ -92,11 +107,12 @@ export default class App extends Component {
                         colors={['#ff0000', '#00ff00', '#0000ff']}
                         progressBackgroundColor="#ffff00"
                     />
-            }>
+                }
+            >
                 {this.renderHeader()}
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={this.renderMovie}
+                    renderRow={(row)=>{return this.renderMovie(row)}}
                     style={styles.listView}
                 />
             </ScrollView>
@@ -143,16 +159,18 @@ export default class App extends Component {
      */
     renderMovie(movie) {
         return (
-            <View style={styles.container}>
-                <Image
-                    source={{uri: movie.posters.thumbnail}}
-                    style={styles.thumbnail}
-                />
-                <View style={styles.rightContainer}>
-                    <Text style={[styles.title, movie.title.length>10 && styles.smallfont]}>{movie.title}</Text>
-                    <Text style={styles.year}>{movie.year}</Text>
+            <TouchableOpacity onPress={this._openUrl.bind(this, movie)}>
+                <View style={styles.container}>
+                    <Image
+                        source={{uri: movie.posters.thumbnail}}
+                        style={styles.thumbnail}
+                    />
+                    <View style={styles.rightContainer}>
+                        <Text style={[styles.title, movie.title.length>10 && styles.smallfont]}>{movie.title}</Text>
+                        <Text style={styles.year}>{movie.year}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 
